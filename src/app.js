@@ -6,9 +6,9 @@ import { engine } from 'express-handlebars';
 import { fileURLToPath } from 'url';
 
 // IMPORTAR RUTAS
-import personaController from './src/controllers/persona.controller.js'; 
-import categoriaController from './src/controllers/categoria.controller.js'; 
-import eventosController from './src/controllers/eventos.controller.js'; 
+import personaController from './controllers/persona.controller.js'; 
+import categoriaController from './controllers/categoria.controller.js'; 
+import eventosController from './controllers/eventos.controller.js'; 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,4 +38,5 @@ app.use('/categoria', categoriaController);
 app.use('/', eventosController);
 
 // SERVIDOR
-app.listen(3000, () => console.log('Servidor web en el puerto 3000!'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor web en el puerto ${PORT}!`));
