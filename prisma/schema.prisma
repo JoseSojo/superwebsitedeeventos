@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+//  TIPOS DE DATOS
+//  INT: número entero
+//  FLOAT: número decimal
+//  BOOLEAN: booleano
+//  STRING: texto
+//  DATE: fecha
+//
+//  @id: identificador único
+
+model Evento {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  descripcion String
+
+  capacidad Int       // capacidad maxima de personas
+  tipo      String
+  lugar     String
+
+  fechaInicio DateTime
+  fechaFin DateTime
+
+  responsableId Int
+  responsable   Persona  @relation(fields: [responsableId], references: [id])
+
+  categorias EventoCategorias[]
+}
+
+model Persona {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  email     String
+
+  eventos Evento[]
+}
+
+model EventoCategorias {
+  id        Int       @id @default(autoincrement())
+
+  eventoId Int
+  categoriaId Int
+
+  evento Evento  @relation(fields: [eventoId], references: [id])
+  categoria Categoria @relation(fields: [categoriaId], references: [id])
+}
+
+model Categoria {
+  id        Int       @id @default(autoincrement())
+  nombre    String
+  descripcion String
+
+  eventos EventoCategorias[]
+}

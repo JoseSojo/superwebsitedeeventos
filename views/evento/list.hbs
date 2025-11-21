@@ -1,0 +1,75 @@
+lista de Eventos
+
+<div class="grid grid-cols-2 gap-5 p-5">
+    <form action="/" method="POST" class="grid">
+        <label class="mt-4">Nombre</label>
+        <input type="text" name="nombre" placeholder="nombre">
+        <label class="mt-4">descripcion</label>
+        <input type="text" name="descripcion" placeholder="descripcion">
+
+        <label class="mt-4">capacidad</label>
+        <input type="number" name="capacidad" placeholder="100" />
+        <label class="mt-4">lugar</label>
+        <input type="text" name="lugar" placeholder="X lugar" />
+
+        <label class="mt-4">Tipo</label>
+        <select name="tipo">
+            <option selected>Publico</option>
+            <option>Privado</option>
+            <option>Benefico</option>
+        </select>
+
+        <label class="mt-4">Fecha inicio</label>
+        <input type="date" name="fechaInicio" />
+
+        <label class="mt-4">Fecha fin</label>
+        <input type="date" name="fechaFin" />
+
+        <label class="mt-4">Responsable</label>
+        <select name="responsableId">
+            <option disabled selected>---</option>
+            {{#each responsables}}
+            <option value="{{this.id}}">{{this.email}}</option>
+            {{/each}}
+        </select>
+
+        <label class="mt-4">Categorias</label>
+        <select name="categoriaId">
+            <option disabled selected>---</option>
+            {{#each categorias}}
+            <option value="{{this.id}}">{{this.nombre}}</option>
+            {{/each}}
+        </select>
+
+        <button type="submit">Agregar</button>
+    </form>
+
+    <div>
+        <form>
+            <input type="text" name="param" class="border">
+                <button type="submit">Buscar</button>
+        </form>
+        <table class="mt-4 w-full">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Capacidad</th>
+                    <th>Lugar</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each lista}}
+                <tr class="border">
+                    <td><a href="/evento/{{id}}">{{this.nombre}}</a></td>
+                    <td>{{this.descripcion}}</td>
+                    <td>{{this.capacidad}}</td>
+                    <td>{{this.lugar}}</td>
+                    <td>{{this.tipo}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

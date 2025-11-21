@@ -1,0 +1,19 @@
+
+lista de personas
+
+<form action="/person" method="POST">
+    <input type="text" name="nombre" placeholder="nombre">
+    <input type="text" name="email" placeholder="email">
+    <button type="submit">Agregar</button>
+</form>
+
+<ul class="mt-4"> 
+    {{#each lista}}
+        <li class="border">
+            <a href="/person/{{id}}">
+                {{this.nombre}}
+                {{this.email}}
+            </a>
+        </li>
+    {{/each}}
+</ul>

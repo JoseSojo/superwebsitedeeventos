@@ -1,0 +1,39 @@
+<h1 class="text-3xl">{{ categoria.nombre }}</h1>
+<h2 class="text-lg">{{ categoria.descripcion }}</h2>
+
+<ul>
+    <li>Eventos: {{ categoria._count.eventos }}</li>
+</ul>
+
+<form action="/categoria/{{categoria.id}}/delete" method="POST">
+    <button class="bg-red-500" type="submit">Eliminar</button>
+</form>
+
+<form action="/categoria/{{categoria.id}}/update" method="POST">
+    <input type="text" value="{{categoria.nombre}}" name="nombre" placeholder="nombre">
+    <input type="text" value="{{categoria.descripcion}}" name="descripcion" placeholder="descripcion">
+    <button type="submit">Actualizar</button>
+</form>
+
+<table class="mt-4 w-full">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Capacidad</th>
+            <th>Lugar</th>
+            <th>Tipo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each categoria.eventos}}
+        <tr class="border">
+            <td><a href="/evento/{{this.evento.id}}">{{this.evento.nombre}}</a></td>
+            <td>{{this.evento.descripcion}}</td>
+            <td>{{this.evento.capacidad}}</td>
+            <td>{{this.evento.lugar}}</td>
+            <td>{{this.evento.tipo}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

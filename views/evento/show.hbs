@@ -1,0 +1,62 @@
+<h1 class="text-3xl">{{ categoria.nombre }}</h1>
+
+<form action="/{{evento.id}}/delete" method="POST">
+    <button class="bg-red-500" type="submit">Eliminar</button>
+</form>
+
+<div class="grid grid-cols-2 gap-5 p-5">
+    <form action="/" method="POST" class="grid">
+        <label class="mt-4">Nombre</label>
+        <input type="text" name="nombre" value="nombre" placeholder="nombre">
+        <label class="mt-4">descripcion</label>
+        <input type="text" name="descripcion" value="descripcion" placeholder="descripcion">
+
+        <label class="mt-4">capacidad</label>
+        <input type="number" name="capacidad" value="capacidad" placeholder="100" />
+        <label class="mt-4">lugar</label>
+        <input type="text" name="lugar" value="lugar" placeholder="X lugar" />
+
+        <label class="mt-4">Tipo</label>
+        <select name="tipo" value="tipo">
+            <option selected>Publico</option>
+            <option>Privado</option>
+            <option>Benefico</option>
+        </select>
+
+        <label class="mt-4">Fecha inicio</label>
+        <input type="date" name="fechaInicio" value="fechaInicio" />
+
+        <label class="mt-4">Fecha fin</label>
+        <input type="date" name="fechaFin" value="fechaFin" />
+
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <div>
+
+        <form action="/add/categoria/{{evento.id}}/" method="POST" class="mb-6">
+            <label class="mt-4">Categorias</label>
+            <select name="categoriaId">
+                <option disabled selected>---</option>
+                {{#each categorias}}
+                <option value="{{this.id}}">{{this.nombre}}</option>
+                {{/each}}
+            </select>
+            <button type="submit">Agregar Categoria</button>
+        </form>
+
+        {{#each evento.categorias}}
+            <a href="/categoria/{{this.categoria.id}}" class="bg-sky-700/40 border border-sky-900 text-sky-900 rounded-full px-2 py-1 text-xs">{{this.categoria.nombre}}</a>
+        {{/each}}
+
+        <ul>
+            <li>Nombre: {{evento.nombre}}</li>
+            <li>Descripcion: {{evento.descripcion}}</li>
+            <li>Capacidad: {{evento.capacidad}}</li>
+            <li>Lugar: {{evento.lugar}}</li>
+            <li>Tipo: {{evento.tipo}}</li>
+            <li>Fecha inicio: {{evento.fechaInicio}}</li>
+            <li>Fecha fin: {{evento.fechaFin}}</li>
+        </ul>
+    </div>
+</div>

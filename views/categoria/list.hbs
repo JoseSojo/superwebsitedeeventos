@@ -1,0 +1,19 @@
+
+lista de categorias
+
+<form action="/categoria" method="POST">
+    <input type="text" name="nombre" placeholder="nombre">
+    <input type="text" name="descripcion" placeholder="descripcion">
+    <button type="submit">Agregar</button>
+</form>
+
+<ul class="mt-4"> 
+    {{#each lista}}
+        <li class="border">
+            <a href="/categoria/{{id}}">
+                {{this.nombre}}
+                {{this.descripcion}}
+            </a>
+        </li>
+    {{/each}}
+</ul>

@@ -1,0 +1,13 @@
+
+<h1 class="text-3xl">{{ persona.nombre }}</h1>
+<h2 class="text-lg">{{ persona.email }}</h2>
+
+<form action="/person/{{persona.id}}/delete" method="POST">
+    <button class="bg-red-500" type="submit">Eliminar</button>
+</form>
+
+<form action="/person/{{persona.id}}/update" method="POST">
+    <input type="text" value="{{persona.nombre}}" name="nombre" placeholder="nombre">
+    <input type="text" value="{{persona.email}}" name="email" placeholder="email">
+    <button type="submit">Actualizar</button>
+</form>
