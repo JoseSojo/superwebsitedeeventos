@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createEvento,deleteEventos,getEventoById,getEventos,updateEvento,addCategoria } from '../models/eventos.js';
+import { createEvento, deleteEventos, getEventoById, getEventos, updateEvento, addCategoria } from '../models/eventos.js';
 import { getPerson } from '../models/person.js';
 import { getCategoria } from '../models/categoria.js';
 import { parse } from 'dotenv';
@@ -16,13 +16,23 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/evento/:id', async (req, res) => {
-    const evento = await getEventoById(req.params.id); // esperar -> 0.5 milisegundos 
 
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const dispositivo = req.get('User-Agent'); // Navegador, SO, dispositivo
+    const metodo = req.method; // POST
+    const url = req.originalUrl; // La ruta llamada
+
+    // Log para ver la info en consola
+    console.log('--- Nuevo Request ---');
+    console.log(`IP: ${ip}`);
+    console.log(`Dispositivo: ${dispositivo}`);
+    console.log(`Info Extra: ${metodo} en ${url}`);
+
+
+    const evento = await getEventoById(req.params.id); // esperar -> 0.5 milisegundos 
     const categorias = await getCategoria();
 
-    console.log(evento.categorias);
-
-    res.render('evento/show', { evento,categorias });
+    res.render('evento/show', { evento, categorias });
 });
 
 router.post('/', async (req, res) => {
@@ -41,7 +51,7 @@ router.post('/', async (req, res) => {
     res.redirect('/');
 });
 
-router.post('/:id/update', async (req, res) =>{
+router.post('/:id/update', async (req, res) => {
     const categoria = req.body;
     await updateEvento({
         nombre: categoria.nombre,
