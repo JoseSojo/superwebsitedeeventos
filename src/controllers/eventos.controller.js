@@ -9,7 +9,9 @@ const router = Router();
 router.get('/', async (req, res) => {
     const query = req.query;
 
-    const lista = await getEventos(query.param);
+    console.log(req.user);
+
+    const lista = await getEventos(query.param, req.user.id);
     const responsables = await getPerson();
     const categorias = await getCategoria();
     res.render('evento/list', { lista, responsables, categorias });
@@ -37,6 +39,9 @@ router.get('/evento/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const evento = req.body;
+
+    console.log(req.user);
+
     await createEvento({
         nombre: evento.nombre,
         descripcion: evento.descripcion,
@@ -45,10 +50,10 @@ router.post('/', async (req, res) => {
         lugar: evento.lugar,
         fechaInicio: new Date(evento.fechaInicio),
         fechaFin: new Date(evento.fechaFin),
-        responsableId: parseInt(evento.responsableId),
-        categoriaId: parseInt(evento.categoriaId),
+        responsableId: req.user.id,
+        // categoriaId: parseInt(evento.categoriaId),
     });
-    res.redirect('/');
+    res.redirect('/eventos');
 });
 
 router.post('/:id/update', async (req, res) => {
@@ -62,7 +67,7 @@ router.post('/:id/update', async (req, res) => {
         fechaInicio: new Date(categoria.fechaInicio),
         fechaFin: new Date(categoria.fechaFin),
     }, parseInt(req.params.id));
-    res.redirect('/categoria');
+    res.redirect('/eventos');
 });
 
 router.post('/add/categoria/:id', async (req, res) => {
@@ -77,7 +82,7 @@ router.post('/add/categoria/:id', async (req, res) => {
 
 router.post('/:id/delete', async (req, res) => {
     await deleteEventos(req.params.id);
-    res.redirect('/evento');
+    res.redirect('/eventos');
 })
 
 export default router;

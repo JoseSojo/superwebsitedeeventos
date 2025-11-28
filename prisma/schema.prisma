@@ -45,6 +45,8 @@ model Persona {
   nombre    String
   email     String
 
+  password  String
+
   eventos Evento[]
 }
 

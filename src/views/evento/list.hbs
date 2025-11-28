@@ -1,75 +1,160 @@
-lista de Eventos
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    {{!-- Título Principal --}}
+    <div class="md:flex md:items-center md:justify-between mb-6">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                Gestión de Eventos
+            </h2>
+        </div>
+    </div>
 
-<div class="grid grid-cols-2 gap-5 p-5">
-    <form action="/" method="POST" class="grid">
-        <label class="mt-4">Nombre</label>
-        <input type="text" name="nombre" placeholder="nombre">
-        <label class="mt-4">descripcion</label>
-        <input type="text" name="descripcion" placeholder="descripcion">
+    {{!-- Grid Principal: Izquierda Formulario, Derecha Tabla --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {{!-- COLUMNA 1: Formulario de Creación (Ocupa 1 espacio) --}}
+        <div class="lg:col-span-1">
+            <div class="bg-white shadow rounded-lg p-6 sticky top-6">
+                <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4 border-b pb-2">Nuevo Evento</h3>
+                
+                <form action="/eventos" method="POST" class="space-y-4">
+                    
+                    {{!-- Nombre --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nombre del Evento</label>
+                        <input type="text" name="nombre" required placeholder="Ej: Tech Conference 2025"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2">
+                    </div>
 
-        <label class="mt-4">capacidad</label>
-        <input type="number" name="capacidad" placeholder="100" />
-        <label class="mt-4">lugar</label>
-        <input type="text" name="lugar" placeholder="X lugar" />
+                    {{!-- Descripción --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Descripción</label>
+                        <textarea name="descripcion" rows="2" placeholder="Breve descripción..."
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2"></textarea>
+                    </div>
 
-        <label class="mt-4">Tipo</label>
-        <select name="tipo">
-            <option selected>Publico</option>
-            <option>Privado</option>
-            <option>Benefico</option>
-        </select>
+                    {{!-- Grid interno para Capacidad y Lugar --}}
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Capacidad</label>
+                            <input type="number" name="capacidad" placeholder="100"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Lugar</label>
+                            <input type="text" name="lugar" placeholder="Auditorio A"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2">
+                        </div>
+                    </div>
 
-        <label class="mt-4">Fecha inicio</label>
-        <input type="date" name="fechaInicio" />
+                    {{!-- Tipo --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Tipo de Evento</label>
+                        <select name="tipo"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2 bg-white">
+                            <option selected>Publico</option>
+                            <option>Privado</option>
+                            <option>Benefico</option>
+                        </select>
+                    </div>
 
-        <label class="mt-4">Fecha fin</label>
-        <input type="date" name="fechaFin" />
+                    {{!-- Fechas (Grid interno) --}}
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Inicio</label>
+                            <input type="datetime-local" name="fechaInicio"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Fin</label>
+                            <input type="datetime-local" name="fechaFin"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2">
+                        </div>
+                    </div>
 
-        <label class="mt-4">Responsable</label>
-        <select name="responsableId">
-            <option disabled selected>---</option>
-            {{#each responsables}}
-            <option value="{{this.id}}">{{this.email}}</option>
-            {{/each}}
-        </select>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Categoría</label>
+                        <select name="categoriaId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2 bg-white">
+                            <option disabled selected>--- Seleccionar ---</option>
+                            {{#each categorias}}
+                            <option value="{{this.id}}">{{this.nombre}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
 
-        <label class="mt-4">Categorias</label>
-        <select name="categoriaId">
-            <option disabled selected>---</option>
-            {{#each categorias}}
-            <option value="{{this.id}}">{{this.nombre}}</option>
-            {{/each}}
-        </select>
+                    {{!-- Botón Submit --}}
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150">
+                            Crear Evento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-        <button type="submit">Agregar</button>
-    </form>
+        {{!-- COLUMNA 2: Lista de Eventos (Ocupa 2 espacios) --}}
+        <div class="lg:col-span-2">
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                
+                {{!-- Barra de búsqueda --}}
+                <div class="p-4 border-b border-gray-200 bg-gray-50 flex gap-2">
+                    <form action="/eventos" method="GET" class="flex w-full gap-2">
+                        <input type="text" name="search" placeholder="Buscar evento..."
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border p-2">
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none">
+                            Buscar
+                        </button>
+                    </form>
+                </div>
 
-    <div>
-        <form>
-            <input type="text" name="param" class="border">
-                <button type="submit">Buscar</button>
-        </form>
-        <table class="mt-4 w-full">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Descripcion</th>
-                    <th>Capacidad</th>
-                    <th>Lugar</th>
-                    <th>Tipo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each lista}}
-                <tr class="border">
-                    <td><a href="/evento/{{id}}">{{this.nombre}}</a></td>
-                    <td>{{this.descripcion}}</td>
-                    <td>{{this.capacidad}}</td>
-                    <td>{{this.lugar}}</td>
-                    <td>{{this.tipo}}</td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                {{!-- Tabla --}}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lugar/Cap.</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {{#each lista}}
+                            <tr class="hover:bg-gray-50 transition duration-150">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-indigo-600 truncate max-w-xs">
+                                        {{this.nombre}}
+                                    </div>
+                                    <div class="text-sm text-gray-500 truncate max-w-xs">{{this.descripcion}}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{this.lugar}}</div>
+                                    <div class="text-xs text-gray-500">Cap: {{this.capacidad}}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                                        {{this.tipo}}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="/eventos/evento/{{this.id}}" class="text-indigo-600 hover:text-indigo-900 mr-3">Ver</a>
+                                    {{!-- Aquí podrías agregar botón de editar/eliminar --}}
+                                </td>
+                            </tr>
+                            {{else}}
+                            <tr>
+                                <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    No hay eventos registrados aún.
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>

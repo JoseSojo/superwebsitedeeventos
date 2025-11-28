@@ -1,62 +1,164 @@
-<h1 class="text-3xl">{{ categoria.nombre }}</h1>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-<form action="/{{evento.id}}/delete" method="POST">
-    <button class="bg-red-500" type="submit">Eliminar</button>
-</form>
+    {{!-- HEADER: Título y Botón Eliminar --}}
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                {{ evento.nombre }}
+            </h2>
+            <p class="mt-1 text-sm text-gray-500">Gestión de detalles del evento</p>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <form action="/eventos/{{evento.id}}/delete" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este evento?');">
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Eliminar Evento
+                </button>
+            </form>
+        </div>
+    </div>
 
-<div class="grid grid-cols-2 gap-5 p-5">
-    <form action="/" method="POST" class="grid">
-        <label class="mt-4">Nombre</label>
-        <input type="text" name="nombre" value="nombre" placeholder="nombre">
-        <label class="mt-4">descripcion</label>
-        <input type="text" name="descripcion" value="descripcion" placeholder="descripcion">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        <label class="mt-4">capacidad</label>
-        <input type="number" name="capacidad" value="capacidad" placeholder="100" />
-        <label class="mt-4">lugar</label>
-        <input type="text" name="lugar" value="lugar" placeholder="X lugar" />
+        {{!-- COLUMNA IZQUIERDA: Formulario de Edición --}}
+        <div class="lg:col-span-2">
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="px-4 py-5 sm:p-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 border-b pb-4 mb-4">Editar Información</h3>
+                    
+                    {{!-- Nota: Asegúrate que la ruta action sea la correcta para tu update --}}
+                    <form action="/eventos/{{evento.id}}/update" method="POST" class="space-y-6">
+                        
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            {{!-- Nombre --}}
+                            <div class="sm:col-span-4">
+                                <label class="block text-sm font-medium text-gray-700">Nombre del Evento</label>
+                                <input type="text" name="nombre" value="{{evento.nombre}}" 
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
 
-        <label class="mt-4">Tipo</label>
-        <select name="tipo" value="tipo">
-            <option selected>Publico</option>
-            <option>Privado</option>
-            <option>Benefico</option>
-        </select>
+                            {{!-- Capacidad --}}
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Capacidad</label>
+                                <input type="number" name="capacidad" value="{{evento.capacidad}}" 
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
 
-        <label class="mt-4">Fecha inicio</label>
-        <input type="date" name="fechaInicio" value="fechaInicio" />
+                            {{!-- Descripción --}}
+                            <div class="sm:col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">Descripción</label>
+                                <textarea name="descripcion" rows="3" 
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{evento.descripcion}}</textarea>
+                            </div>
 
-        <label class="mt-4">Fecha fin</label>
-        <input type="date" name="fechaFin" value="fechaFin" />
+                            {{!-- Lugar --}}
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Lugar</label>
+                                <input type="text" name="lugar" value="{{evento.lugar}}" 
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
 
-        <button type="submit">Actualizar</button>
-    </form>
+                            {{!-- Tipo --}}
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Tipo</label>
+                                <select name="tipo" class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    {{!-- Un pequeño truco de JS o Helper sería ideal aquí para el 'selected', pero por ahora HTML simple --}}
+                                    <option value="Publico">Público</option>
+                                    <option value="Privado">Privado</option>
+                                    <option value="Benefico">Benéfico</option>
+                                </select>
+                                <p class="mt-1 text-xs text-gray-500">Actual: {{evento.tipo}}</p>
+                            </div>
 
-    <div>
+                            {{!-- Fechas --}}
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Fecha Inicio</label>
+                                <input type="datetime-local" name="fechaInicio" value="{{evento.fechaInicio}}" 
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
 
-        <form action="/add/categoria/{{evento.id}}/" method="POST" class="mb-6">
-            <label class="mt-4">Categorias</label>
-            <select name="categoriaId">
-                <option disabled selected>---</option>
-                {{#each categorias}}
-                <option value="{{this.id}}">{{this.nombre}}</option>
-                {{/each}}
-            </select>
-            <button type="submit">Agregar Categoria</button>
-        </form>
+                            <div class="sm:col-span-3">
+                                <label class="block text-sm font-medium text-gray-700">Fecha Fin</label>
+                                <input type="datetime-local" name="fechaFin" value="{{evento.fechaFin}}" 
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
 
-        {{#each evento.categorias}}
-            <a href="/categoria/{{this.categoria.id}}" class="bg-sky-700/40 border border-sky-900 text-sky-900 rounded-full px-2 py-1 text-xs">{{this.categoria.nombre}}</a>
-        {{/each}}
+                        <div class="pt-5 border-t border-gray-200">
+                            <div class="flex justify-end">
+                                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-        <ul>
-            <li>Nombre: {{evento.nombre}}</li>
-            <li>Descripcion: {{evento.descripcion}}</li>
-            <li>Capacidad: {{evento.capacidad}}</li>
-            <li>Lugar: {{evento.lugar}}</li>
-            <li>Tipo: {{evento.tipo}}</li>
-            <li>Fecha inicio: {{evento.fechaInicio}}</li>
-            <li>Fecha fin: {{evento.fechaFin}}</li>
-        </ul>
+        {{!-- COLUMNA DERECHA: Categorías y Resumen --}}
+        <div class="lg:col-span-1 space-y-6">
+            
+            {{!-- Card: Gestión de Categorías --}}
+            <div class="bg-white shadow rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Categorías</h3>
+                
+                {{!-- Lista de etiquetas actuales --}}
+                <div class="flex flex-wrap gap-2 mb-6">
+                    {{#each evento.categorias}}
+                        <span class="inline-flex items-center rounded-full bg-indigo-100 px-3 py-0.5 text-sm font-medium text-indigo-800">
+                            {{this.categoria.nombre}}
+                            {{!-- Botón X pequeña para eliminar categoría (Opcional) --}}
+                            <form action="/eventos/{{../evento.id}}/categoria/{{this.categoria.id}}/delete" method="POST" class="inline ml-1.5">
+                                <button type="submit" class="text-indigo-400 hover:text-indigo-600 font-bold">×</button>
+                            </form>
+                        </span>
+                    {{else}}
+                        <span class="text-sm text-gray-500 italic">Sin categorías asignadas.</span>
+                    {{/each}}
+                </div>
+
+                {{!-- Formulario agregar categoría --}}
+                <form action="/add/categoria/{{evento.id}}" method="POST" class="mt-2 border-t pt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Agregar nueva etiqueta</label>
+                    <div class="flex gap-2">
+                        <select name="categoriaId" class="block w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option disabled selected>Seleccionar...</option>
+                            {{#each categorias}}
+                            <option value="{{this.id}}">{{this.nombre}}</option>
+                            {{/each}}
+                        </select>
+                        <button type="submit" class="inline-flex items-center p-2 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {{!-- Card: Resumen Rápido (Read Only) --}}
+            <div class="bg-gray-50 shadow rounded-lg p-6 border border-gray-200">
+                <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Resumen del sistema</h4>
+                <dl class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">ID Evento:</dt>
+                        <dd class="font-medium text-gray-900">#{{evento.id}}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Creado:</dt>
+                        {{!-- Usar helper de fecha si tienes, si no texto crudo --}}
+                        <dd class="font-medium text-gray-900">{{evento.createdAt}}</dd>
+                    </div>
+                    <div class="flex justify-between">
+                        <dt class="text-gray-500">Estado:</dt>
+                        <dd class="text-green-600 font-semibold">Activo</dd>
+                    </div>
+                </dl>
+            </div>
+
+        </div>
     </div>
 </div>

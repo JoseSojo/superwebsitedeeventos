@@ -16,15 +16,46 @@ function format(objeto) {
     }
 }
 
-export async function getEventos(param) {
+// SELECT * FROM evento WHERE responsableId = 1 AND nombre LIKE '%evento%'
+
+// Buscar con un usuario
+export async function getEventos(param, userId) {
     const eventos = await prisma.evento.findMany({
         include: {
             categorias: true,
             responsable: true,
         },
         where: {
-            nombre: { startsWith: param }
+            AND: [
+                { nombre: { startsWith: param } },
+                { responsable: { id: userId } }
+            ]
         }
+    });
+    return eventos.map((evento) => format(evento));
+}
+
+export async function getPublicEvent(param, skip, take, categoriaId) {
+
+    const where = [];
+
+    where.push({ nombre: { contains: param } });
+    if(categoriaId) where.push({ categorias: { some: { categoria: { id: categoriaId } } } });
+
+    const eventos = await prisma.evento.findMany({
+        include: {
+            categorias: {
+                include: {
+                    categoria: true
+                }
+            },
+            responsable: true,
+        },
+        where: {
+            AND: where
+        },
+        skip,
+        take
     });
     return eventos.map((evento) => format(evento));
 }
@@ -55,11 +86,11 @@ export async function createEvento(evento) {
             fechaInicio: evento.fechaInicio,
             fechaFin: evento.fechaFin,
             responsable: { connect: { id: evento.responsableId } },
-            categorias: {
-                create: {
-                    categoria: { connect: { id: evento.categoriaId } }
-                }
-            }
+            // categorias: {
+                // create: {
+                    // categoria: { connect: { id: evento.categoriaId } }
+                // }
+            // }
         }
     });
 }

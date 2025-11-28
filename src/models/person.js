@@ -51,6 +51,31 @@ export async function deletePerson(id) {
     });
 }
 
+export const mostrarPortafolio = async (id) => {
+
+    const organizador = await prisma.persona.findUnique({
+        where: { id: parseInt(id) },
+        include: {
+            eventos: {
+                include: {
+                    categorias: { include: { categoria: true } }
+                },
+                orderBy: { fechaInicio: 'desc' } // Los más recientes primero
+            }
+        }
+    });
+
+    // Calcular estadísticas simples para el dashboard del perfil
+    const totalEventos = organizador.eventos.length;
+    const eventosActivos = organizador.eventos.filter(e => new Date(e.fechaFin) > new Date()).length;
+    const capacidadTotalGestionada = organizador.eventos.reduce((acc, curr) => acc + curr.capacidad, 0);
+
+    return {
+        organizador,
+        stats: { totalEventos, eventosActivos, capacidadTotalGestionada }
+    }
+};
+
 // export {
 //     getPerson, 
 //     getPersonById, 
